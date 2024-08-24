@@ -9,6 +9,7 @@ import 'dna.dart';
 
 class Population {
   Random rando = Random();
+  static const int maxPhrases = 100;
 
   // Array to hold the current population
   List<DNA> population = [];
@@ -119,18 +120,30 @@ class Population {
   }
 
   /// Compute average fitness for the population
-  // double getAverageFitness() {
-  //   double total = 0.0;
-  //   for (var dna in population) {
-  //     total += dna.fitness;
-  //   }
-  //   return total / population.length;
-  // }
+  double get averageFitness {
+    double total = 0.0;
+    for (var dna in population) {
+      total += dna.fitness;
+    }
+    return total / population.length;
+  }
+
+  List<String> get phraseSubset {
+    List<String> lst = [];
+
+    int displayLimit = min(population.length, maxPhrases);
+
+    for (var i = 0; i < displayLimit; i++) {
+      lst.add(population[i].phrase);
+    }
+
+    return lst;
+  }
 
   String get allPhrases {
     String everything = "";
 
-    int displayLimit = min(population.length, 50);
+    int displayLimit = min(population.length, maxPhrases);
 
     for (var i = 0; i < displayLimit; i++) {
       everything += 'population[i].phrase\n';

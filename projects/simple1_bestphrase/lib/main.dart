@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'app_state.dart';
-import 'simulation.dart' as sim;
-
-final AppState appState = AppState()..setup();
-final sim.Simulation simulation = sim.Simulation(appState);
+import 'widgets/left_status_section_widget.dart';
+import 'widgets/right_phrases_section_widget.dart';
 
 void main() {
+  final AppState appState = AppState.create()..setup();
+
   runApp(
     ChangeNotifierProvider.value(
       value: appState,
       child: const MyApp(),
     ),
   );
-  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -46,111 +45,89 @@ class _MyHomePageState extends State<MyHomePage> {
   //   left = fixed pos text, right = scrolling text
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                appState.start();
-                simulation.simulate();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange.shade50,
-                foregroundColor: const Color.fromARGB(255, 104, 58, 22),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              child: const Tooltip(
-                message: 'Start Algorithm',
-                child: Text('Start'),
-              ),
-            ),
-            const SizedBox(width: 10),
-            ElevatedButton(
-              onPressed: () {
-                appState.stop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange.shade50,
-                foregroundColor: const Color.fromARGB(255, 104, 58, 22),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              child: const Tooltip(
-                message: 'Stop Algorithm',
-                child: Text('Stop'),
-              ),
-            ),
-            const SizedBox(width: 10),
-          ],
-        ),
-        // A single Row with
-        //
-        // -----------------------------------------
-        // |                       |               |
-        // |                       |               |
-        // |                       |               |
-        // |                       |               |
-        // | xxxxxx                |               |
-        // | xxxxxx                |               |
-        // | xxxxxx                |               |
-        // -----------------------------------------
-        body: Container(
-          padding: const EdgeInsets.all(5),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 400,
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.grey.shade400,
-                  ),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('line1'),
-                      Text('line2'),
-                    ],
-                  ),
-                ),
-              ),
-              const VerticalDivider(
-                width: 10,
-                thickness: 1,
-                indent: 20,
-                endIndent: 0,
-                color: Colors.grey,
-              ),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade200),
-                ),
-              ),
-            ],
-          ),
-        )
-        // const Row(
-        //   mainAxisAlignment: MainAxisAlignment.start,
-        //   children: <Widget>[
-        //      Text(
-        //       'You have pushed the button this many times:',
-        //     ),
+    AppState appState = context.read<AppState>();
 
-        //   ],
-        // ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {},
-        //   tooltip: 'Increment',
-        //   child: const Icon(Icons.add),
-        // ), // This trailing comma makes auto-formatting nicer for build methods.
-        );
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              appState.reset();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange.shade50,
+              foregroundColor: const Color.fromARGB(255, 104, 58, 22),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            child: const Tooltip(
+              message: 'Reset Algorithm',
+              child: Text('Reset'),
+            ),
+          ),
+          const SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () {
+              appState.start();
+              appState.simulation.simulate();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange.shade50,
+              foregroundColor: const Color.fromARGB(255, 104, 58, 22),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            child: const Tooltip(
+              message: 'Start Algorithm',
+              child: Text('Start'),
+            ),
+          ),
+          const SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () {
+              appState.stop();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange.shade50,
+              foregroundColor: const Color.fromARGB(255, 104, 58, 22),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            child: const Tooltip(
+              message: 'Stop Algorithm',
+              child: Text('Stop'),
+            ),
+          ),
+          const SizedBox(width: 10),
+        ],
+      ),
+      body: Consumer<AppState>(
+        builder: (BuildContext context, AppState value, Widget? child) {
+          return Container(
+            padding: const EdgeInsets.all(5),
+            child: Row(
+              children: [
+                LeftStatusSectionWidget(appState: value),
+                const VerticalDivider(
+                  width: 10,
+                  thickness: 1,
+                  indent: 20,
+                  endIndent: 0,
+                  color: Colors.grey,
+                ),
+                Expanded(
+                  child: RightPhrasesSectionWidget(appState: value),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }

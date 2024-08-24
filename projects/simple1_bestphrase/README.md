@@ -1,4 +1,10 @@
 # simple1_bestphrase
+The Nature of Code
+
+The Coding Train / Daniel Shiffman
+
+- https://youtu.be/jv3CgDN9sc
+- https://thecodingtrain.com/more/achive/nature-of-code/9-genetic-algorithms/9.4-looking-at-code.html
 
 Figures out a phase using GAs.
 
@@ -31,6 +37,7 @@ The Inner loop's goal is to create a **new** population.
 
 ## GUI
 Show
+- Input the enter phrase (defaults) to "To be or not to be."
 - Current element with highest fitness of the population
 - Total generations
 - Average fitness
