@@ -2,7 +2,6 @@ import 'dart:math';
 
 class TextListModel {
   List<String> lines = [];
-  int lineCnt = 0;
   static const windowSize = 150;
   static const bufferSize = 150;
 
@@ -11,7 +10,6 @@ class TextListModel {
   int indexEnd = windowSize;
 
   TextListModel() {
-    lineCnt = lines.length;
     scrollToBottom();
   }
 
@@ -21,10 +19,17 @@ class TextListModel {
   }
 
   void addLine(String text) {
-    lineCnt++;
     lines.add(text);
     if (lines.length > bufferSize) {
       lines.removeAt(0);
+    }
+    scrollToBottom();
+  }
+
+  void addLines(List<String> lineList) {
+    lines.addAll(lineList);
+    if (lines.length > bufferSize) {
+      lines.removeRange(0, lines.length - bufferSize);
     }
     scrollToBottom();
   }

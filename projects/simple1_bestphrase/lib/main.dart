@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'app_state.dart';
+import 'ga_simulation.dart';
 import 'widgets/left_status_section_widget.dart';
 import 'widgets/right_phrases_section_widget.dart';
 
-void main() {
-  final AppState appState = AppState.create()..setup();
+void main() async {
+  // final AppState appState = AppState.create()..setup();
+  final GASimulation gaSimulation = GASimulation();
+  await gaSimulation.initialize();
 
   runApp(
     ChangeNotifierProvider.value(
-      value: appState,
+      value: gaSimulation,
       child: const MyApp(),
     ),
   );
@@ -45,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //   left = fixed pos text, right = scrolling text
   @override
   Widget build(BuildContext context) {
-    AppState appState = context.read<AppState>();
+    GASimulation gaSim = context.read<GASimulation>();
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           ElevatedButton(
             onPressed: () {
-              appState.reset();
+              gaSim.configure();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange.shade50,
@@ -64,15 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             child: const Tooltip(
-              message: 'Reset Algorithm',
-              child: Text('Reset'),
+              message: 'Configure Algorithm for simulation',
+              child: Text('Configure'),
             ),
           ),
           const SizedBox(width: 10),
           ElevatedButton(
             onPressed: () {
-              appState.start();
-              appState.simulation.simulate();
+              gaSim.start();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange.shade50,
@@ -89,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(width: 10),
           ElevatedButton(
             onPressed: () {
-              appState.stop();
+              gaSim.stop();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange.shade50,
@@ -104,15 +105,32 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           const SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () {
+              gaSim.exit();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red.shade50,
+              foregroundColor: const Color.fromARGB(255, 104, 58, 22),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            child: const Tooltip(
+              message: 'Exit Sim Isolate',
+              child: Text('Exit Isolate'),
+            ),
+          ),
+          const SizedBox(width: 10),
         ],
       ),
-      body: Consumer<AppState>(
-        builder: (BuildContext context, AppState value, Widget? child) {
+      body: Consumer<GASimulation>(
+        builder: (BuildContext context, GASimulation value, Widget? child) {
           return Container(
             padding: const EdgeInsets.all(5),
             child: Row(
               children: [
-                LeftStatusSectionWidget(appState: value),
+                LeftStatusSectionWidget(simulation: value),
                 const VerticalDivider(
                   width: 10,
                   thickness: 1,
@@ -121,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.grey,
                 ),
                 Expanded(
-                  child: RightPhrasesSectionWidget(appState: value),
+                  child: RightPhrasesSectionWidget(simulation: value),
                 ),
               ],
             ),

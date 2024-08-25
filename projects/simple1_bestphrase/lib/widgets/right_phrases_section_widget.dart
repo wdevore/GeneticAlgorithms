@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
-import '../app_state.dart';
-import '../population.dart';
-import '../text_list_model.dart';
+import '../ga_simulation.dart';
+import '../model/text_list_model.dart';
 import 'text_scrolling_widget.dart';
 
 // -----------------------------------------
@@ -18,9 +15,9 @@ import 'text_scrolling_widget.dart';
 // -----------------------------------------
 //          LEFT              RIGHT
 class RightPhrasesSectionWidget extends StatefulWidget {
-  const RightPhrasesSectionWidget({super.key, required this.appState});
+  const RightPhrasesSectionWidget({super.key, required this.simulation});
 
-  final AppState appState;
+  final GASimulation simulation;
 
   @override
   State<RightPhrasesSectionWidget> createState() =>
@@ -30,33 +27,28 @@ class RightPhrasesSectionWidget extends StatefulWidget {
 class _RightPhrasesSectionWidgetState extends State<RightPhrasesSectionWidget> {
   @override
   Widget build(BuildContext context) {
-    Population? pop = widget.appState.population;
+    TextListModel phrases = widget.simulation.textListModel;
 
-    if (pop == null) {
+    if (phrases.lines.isEmpty) {
       return SizedBox(
         width: 400,
         child: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: Colors.grey.shade400,
+            color: Colors.amber.shade50,
           ),
         ),
       );
     }
 
-    List<String> phrases = pop.phraseSubset;
-    widget.appState.textListModel.lines.clear();
-    for (String phrase in phrases) {
-      widget.appState.textListModel.addLine(phrase);
-    }
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: Colors.grey.shade400,
       ),
-      child: TextScrollingWidget(model: widget.appState.textListModel),
+      child: TextScrollingWidget(model: phrases),
     );
   }
 }

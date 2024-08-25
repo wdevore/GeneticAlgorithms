@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../app_state.dart';
-import '../population.dart';
+import '../ga_simulation.dart';
 
 // -----------------------------------------
 // | xxxxxx                |lkajlfkgjalfds |
@@ -14,9 +13,9 @@ import '../population.dart';
 // -----------------------------------------
 //          LEFT              RIGHT
 class LeftStatusSectionWidget extends StatefulWidget {
-  const LeftStatusSectionWidget({super.key, required this.appState});
+  const LeftStatusSectionWidget({super.key, required this.simulation});
 
-  final AppState appState;
+  final GASimulation simulation;
 
   @override
   State<LeftStatusSectionWidget> createState() =>
@@ -26,19 +25,21 @@ class LeftStatusSectionWidget extends StatefulWidget {
 class _LeftStatusSectionWidgetState extends State<LeftStatusSectionWidget> {
   @override
   Widget build(BuildContext context) {
-    Population? pop = widget.appState.population;
-    if (pop == null) {
-      return SizedBox(
-        width: 400,
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.grey.shade400,
-          ),
-        ),
-      );
-    }
+    GASimulation sim = widget.simulation;
+
+    // Population? pop = widget.appState.population;
+    // if (pop == null) {
+    //   return SizedBox(
+    //     width: 400,
+    //     child: Container(
+    //       padding: const EdgeInsets.all(10),
+    //       decoration: BoxDecoration(
+    //         borderRadius: BorderRadius.circular(10),
+    //         color: Colors.grey.shade400,
+    //       ),
+    //     ),
+    //   );
+    // }
 
     return SizedBox(
       width: 400,
@@ -51,11 +52,11 @@ class _LeftStatusSectionWidgetState extends State<LeftStatusSectionWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Best phrase: "${pop.best}"'),
-            Text('Total Generations: ${pop.generations}'),
-            Text('Average fitness: ${pop.averageFitness}'),
-            Text('Total population: ${widget.appState.popmax}'),
-            Text('Mutation rate: ${widget.appState.mutationRate}'),
+            Text('Best phrase: "${sim.best}"'),
+            Text('Total Generations: ${sim.generations}'),
+            Text('Average fitness: ${sim.averageFitness}'),
+            Text('Total population: ${sim.popmax}'),
+            Text('Mutation rate: ${sim.mutationRate}'),
           ],
         ),
       ),

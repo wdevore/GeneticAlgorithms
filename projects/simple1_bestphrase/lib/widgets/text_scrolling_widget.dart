@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../text_list_model.dart';
+import '../model/text_list_model.dart';
 
 class TextScrollingWidget extends StatefulWidget {
   const TextScrollingWidget({super.key, required this.model});
