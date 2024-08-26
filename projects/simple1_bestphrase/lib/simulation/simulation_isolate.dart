@@ -67,7 +67,7 @@ gaIsolate(SendPort sendPort) async {
       while (!iso.isPaused && !pop.finished) {
         // debugPrint('SimIsolate: running sim');
         // Generate mating pool
-        pop.naturalSelection();
+        pop.naturalSelectionRejectionSampling();
 
         // Create next generation
         pop.generate();

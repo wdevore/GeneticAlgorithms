@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:num_remap/num_remap.dart';
 
 import 'dna.dart';
+import 'maths.dart';
 
 class Population {
   Random rando = Random();
@@ -22,6 +23,7 @@ class Population {
   double perfectScore = 1.0;
   double worldrecord = 0.0;
   late List<String> genesPhrase;
+  double maxFitness = 0.0;
 
   String best = '';
 
@@ -50,8 +52,8 @@ class Population {
     }
   }
 
-  /// Generate a mating pool
-  void naturalSelection() {
+  /// Generate a mating pool (broken in favor of rejection sampling)
+  void naturalSelectionPools() {
     // Clear the ArrayList
     matingPool.clear();
 
@@ -82,25 +84,55 @@ class Population {
     }
   }
 
+  // Rejection sampling technique which eliminates probability pools.
+  // NOTE: even though this uses less memory it is slower to converge.
+  void naturalSelectionRejectionSampling() {
+    maxFitness = 0.0;
+
+    for (var dna in population) {
+      maxFitness = max(dna.fitness, maxFitness);
+    }
+  }
+
   /// Create a new generation
   void generate() {
-    // Refill the population with children from the mating pool
-    int poolLength = matingPool.length;
+    // Start a new population to build. We don't want to place the new child
+    // in the population that we currently working with. The "incoming"
+    // population must be a "source" only! Not both.
+    List<DNA> newPopulation = [];
 
     for (var i = 0; i < population.length; i++) {
-      int a = rando.nextInt(poolLength);
-      int b = rando.nextInt(poolLength);
-
-      DNA partnerA = matingPool[a];
-      DNA partnerB = matingPool[b];
+      DNA? partnerA = acceptReject();
+      DNA? partnerB = acceptReject();
 
       DNA child = partnerA.crossover(partnerB);
       child.mutate(mutationRate);
 
-      population[i] = child;
+      newPopulation.add(child);
     }
 
+    // Switch to the new population.
+    population = newPopulation;
+
     generations++;
+  }
+
+  DNA acceptReject() {
+    int degenerate = 0;
+    while (true) {
+      int index = Maths.randomRange(0, population.length);
+      DNA partner = population[index];
+      double r = Maths.randomRangeDouble(0.0, maxFitness);
+      if (r < partner.fitness) {
+        return partner;
+      }
+
+      degenerate++;
+
+      if (degenerate > 10000) {
+        return partner;
+      }
+    }
   }
 
   /// Compute the current "most fit" member of the population
@@ -116,7 +148,7 @@ class Population {
     }
 
     best = population[index].phrase;
-    finished = worldrecord == perfectScore;
+    finished = worldrecord >= perfectScore;
   }
 
   /// Compute average fitness for the population

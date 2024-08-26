@@ -75,7 +75,10 @@ class DNA {
     // An additional fitness augmentation that accelerates the search space.
     // The power function expands the distance between fitness values such
     // that small deltas are amplified.
-    fitness = pow(fitness, fitnessPower).toDouble();
+    // 0.1 is added to avoid fitness values of zero, this is because the
+    // random generator doesn't generate value < 0.0. This means every
+    // fitness value is a minimum of 0.01.
+    fitness = pow(fitness, fitnessPower).toDouble() + 0.01;
   }
 
   /// Crossover returns a 'mix' between the [partner] DNA and this DNA.
