@@ -40,12 +40,15 @@ class DNA {
   }
 
   String generateChar() {
-    var c = randomRange(63, 122);
-    if (c == 63) {
-      c = 32;
-    } else if (c == 64) {
-      c = 46;
-    }
+    // The original range from p5.js was (63, 122)
+    // I expanded it to include numbers and symbols.
+    var c = randomRange(31, 127);
+
+    // if (c == 63) {
+    //   c = 32;
+    // } else if (c == 64) {
+    //   c = 46;
+    // }
 
     return String.fromCharCode(c);
   }

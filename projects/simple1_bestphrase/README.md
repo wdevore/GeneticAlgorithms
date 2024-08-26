@@ -10,7 +10,7 @@ Figures out a phase using GAs.
 
 The genetic information (DNA) is a sequence of characters, for example, "Unijorm" has 7 genetic pieces of information.
 
-Without *mutation* and The initial population must contain every gene. The genes are not required to be present in a single *element*. The genes could be dispersed amongst the population. If the population is to small the probability of genes being present decreases. If a gene is missing then the algorithm will never converge.
+Regardless of *mutation*, the initial population must contain every gene (aka alphabet chars). The genes are not required to be present in a single *element*. The genes could be dispersed amongst the population. If the population is to small the probability of genes being present decreases to the point that a solution can't be found. If a gene is missing then the algorithm will never converge.
 
 ## Steps
 - Setup

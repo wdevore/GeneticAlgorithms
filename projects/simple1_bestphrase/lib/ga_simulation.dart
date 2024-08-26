@@ -24,7 +24,7 @@ class GASimulation extends ChangeNotifier {
   TextListModel textListModel = TextListModel();
 
   Future<int> initialize() async {
-    target = 'To be or not to be.';
+    target = 'To be or not to be.'; // The lazy dog jumped over the fence
     popmax = 200;
     mutationRate = 0.01;
 
