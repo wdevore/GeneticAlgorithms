@@ -8,6 +8,10 @@ The Coding Train / Daniel Shiffman
 
 Figures out a phase using GAs.
 
+## Usage
+Enter a *target phrase*, *initial population max* and *mutation rate*. Then click **configure** then **Start**. You can **Stop** at any time and then resume using **Start**. **Exit Isolate** simply shutdowns the simulation Isolate, however, you must restart the app to restart the Isolate.
+![Screenshot Image](GeneticAlgorithm-Simple-Phrase.png)
+
 The genetic information (DNA) is a sequence of characters, for example, "Unijorm" has 7 genetic pieces of information.
 
 Regardless of *mutation*, the initial population must contain every gene (aka alphabet chars). The genes are not required to be present in a single *element*. The genes could be dispersed amongst the population. If the population is to small the probability of genes being present decreases to the point that a solution can't be found. If a gene is missing then the algorithm will never converge.
