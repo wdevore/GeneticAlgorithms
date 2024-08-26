@@ -14,6 +14,7 @@ class DNA {
 
   late List<String> genes;
   double fitness = 0.0;
+  double fitnessPower = 4.0;
 
   DNA();
 
@@ -71,6 +72,10 @@ class DNA {
       }
     }
     fitness = score / genesPhrase.length;
+    // An additional fitness augmentation that accelerates the search space.
+    // The power function expands the distance between fitness values such
+    // that small deltas are amplified.
+    fitness = pow(fitness, fitnessPower).toDouble();
   }
 
   /// Crossover returns a 'mix' between the [partner] DNA and this DNA.
