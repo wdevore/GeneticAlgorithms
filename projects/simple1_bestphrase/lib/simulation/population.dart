@@ -86,6 +86,9 @@ class Population {
 
   // Rejection sampling technique which eliminates probability pools.
   // NOTE: even though this uses less memory it is slower to converge.
+  // The coding train has a follow up video that shows a faster yet simpler
+  // way of picking items based on each item's probability.
+  // https://www.youtube.com/watch?v=ETphJASzYes&list=PLRqwX-V7Uu6bJM3VgzjNV5YxVxUwzALHV&index=1&t=0s
   void naturalSelectionRejectionSampling() {
     maxFitness = 0.0;
 
@@ -97,13 +100,20 @@ class Population {
   /// Create a new generation
   void generate() {
     // Start a new population to build. We don't want to place the new child
-    // in the population that we currently working with. The "incoming"
+    // into the population that we are currently working with. The "incoming"
     // population must be a "source" only! Not both.
     List<DNA> newPopulation = [];
 
+    // To use probability sampling the list must be sorted either accending    // or decending depending on whether the "fitness" is subtracted or
+    // added in probabilitySampling(). Currently the sample method subtracts
+    // which means "b" is sorted against "a".
+    population.sort((a, b) => b.fitness.compareTo(a.fitness)); // decending
+    // print(
+    //     '${population[0].fitness}, ${population[population.length - 1].fitness}');
+
     for (var i = 0; i < population.length; i++) {
-      DNA? partnerA = acceptReject();
-      DNA? partnerB = acceptReject();
+      DNA? partnerA = probabilitySampling();
+      DNA? partnerB = probabilitySampling();
 
       DNA child = partnerA.crossover(partnerB);
       child.mutate(mutationRate);
@@ -115,6 +125,20 @@ class Population {
     population = newPopulation;
 
     generations++;
+  }
+
+  // NOTE: This requires that the population is sorted prior.
+  DNA probabilitySampling() {
+    int index = 0;
+    double r = rando.nextDouble();
+
+    while (r > 0) {
+      r -= population[index].fitness;
+      index++;
+    }
+
+    index--;
+    return population[index];
   }
 
   DNA acceptReject() {
