@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -5,7 +7,8 @@ import 'simulation/simulation.dart';
 import 'widgets/bloops_painter_widget.dart';
 
 void main() {
-  final GASimulation gaSimulation = GASimulation();
+  // World starts with 20 bloops and 20 pieces of food
+  final GASimulation gaSimulation = GASimulation(20, Random());
 
   runApp(
     ChangeNotifierProvider.value(
@@ -54,7 +57,24 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           ElevatedButton(
             onPressed: () {
-              gaSim.configure();
+              gaSim.spawn();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.orange.shade50,
+              foregroundColor: const Color.fromARGB(255, 104, 58, 22),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            child: const Tooltip(
+              message: 'Create a new Bloop at a random location',
+              child: Text('Spawn Bloop'),
+            ),
+          ),
+          const SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () {
+              gaSim.configure(200, Random());
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange.shade50,

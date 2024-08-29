@@ -46,16 +46,11 @@ class BloopsPainter extends CustomPainter {
   final GASimulation simulation;
   final strokeWidth = 1.0;
 
-  late Paint linePaint;
-  late Paint linePaint2;
+  late Paint circlePaint;
 
   BloopsPainter(this.simulation) {
-    linePaint = Paint()
-      ..color = const Color.fromARGB(100, 100, 100, 100)
-      ..strokeWidth = strokeWidth;
-    linePaint2 = Paint()
-      ..color = const Color.fromARGB(100, 50, 50, 50)
-      ..style = PaintingStyle.stroke
+    circlePaint = Paint()
+      ..color = const Color.fromARGB(255, 0, 0, 0)
       ..strokeWidth = strokeWidth;
   }
 
@@ -71,9 +66,15 @@ class BloopsPainter extends CustomPainter {
   }
 
   void _draw(Canvas canvas, Size size, double strokeWidth) {
-    Vector2D position = simulation.bloop.position;
+    simulation.food.draw(canvas, size);
 
-    canvas.drawCircle(
-        Offset(position.x, position.y), simulation.bloop.r, linePaint);
+    for (var bloop in simulation.bloops) {
+      Vector2D position = bloop.position;
+      int alpha = bloop.health.toInt();
+      circlePaint.color = Color.fromARGB(alpha, 0, 0, 0);
+
+      canvas.drawCircle(
+          Offset(position.x, position.y), bloop.r * 2, circlePaint);
+    }
   }
 }
