@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fast_noise/fast_noise.dart';
 
 import 'bloop.dart';
 import 'dna.dart';
@@ -8,12 +9,38 @@ class GASimulation extends ChangeNotifier {
   bool running = false;
   late Bloop bloop;
 
+  static const double width = 1000.0;
+  static const double height = 500.0;
+
+  late List<List<double>> noise2D;
+  double noiseFrequency = 0.015;
+  int noiseOctaves = 5;
+
   GASimulation() {
-    bloop = Bloop.create(Vector2D(Bloop.width / 2, Bloop.height / 2), DNA());
+    noise2D = noise2(
+      (width * height).toInt(),
+      1,
+      // width.toInt(),
+      // height.toInt(),
+      noiseType: NoiseType.perlin,
+      frequency: noiseFrequency,
+      octaves: noiseOctaves,
+      cellularReturnType: CellularReturnType.distance,
+    );
+
+    configure();
   }
 
   void configure() {
-    bloop.configure();
+    bloop = Bloop.create(
+      noise2D,
+      width,
+      height,
+      Vector2D(width / 2, height / 2),
+      DNA(),
+      10.1,
+      15.0,
+    );
   }
 
   void start() {
@@ -27,7 +54,7 @@ class GASimulation extends ChangeNotifier {
   void run() async {
     Future.doWhile(() async {
       update();
-      await Future.delayed(const Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 16));
       return running;
     });
   }

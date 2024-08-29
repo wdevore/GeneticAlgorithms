@@ -1,52 +1,53 @@
 import 'dart:math';
-import 'package:fast_noise/fast_noise.dart';
-import 'package:flutter/material.dart';
 import 'package:num_remap/num_remap.dart';
 
 import 'dna.dart';
 import 'vector_2d.dart';
 
 class Bloop {
-  static const double width = 1000.0;
-  static const double height = 500.0;
-  static const double size = width * height;
+  late double width;
+  late double height;
+  late double size = width * height;
+
+  // --------- Noise properties
+  late List<List<double>> noise2D;
+  double noiseIndexSteppingRate = 0.5;
+  late double xOff;
+  late double yOff;
 
   Random rando = Random();
-  late List<List<double>> noise2D;
 
   late Vector2D position;
   late DNA dna;
 
   int health = 200;
-  late double xOff;
-  late double yOff;
 
-  double maxSpeed = 0.0;
-  double r = 1.0; // radius
+  late double maxSpeed;
+  late double r; // radius
 
   Bloop();
 
-  factory Bloop.create(Vector2D position, DNA dna) {
+  factory Bloop.create(
+    List<List<double>> noise2D,
+    double canvasWidth,
+    double canvasHeight,
+    Vector2D position,
+    DNA dna,
+    double maxSpeed,
+    double radius,
+  ) {
     Bloop bloop = Bloop()
+      ..noise2D = noise2D
+      ..width = canvasWidth
+      ..height = canvasHeight
       ..position = position
       ..dna = dna
       // DNA will determine size and maxspeed
       // The bigger the bloop, the slower it is
-      ..maxSpeed = 1.1 //dna.genes[0].remap(0, 1, 15, 0)
-      ..r = 15.0 //dna.genes[0].remap(0, 1, 0, 25)
+      ..maxSpeed = maxSpeed //dna.genes[0].remap(0, 1, 15, 0)
+      ..r = radius //dna.genes[0].remap(0, 1, 0, 25)
       // Generate a 1D array using a 1x(N*M) array
-      ..noise2D = noise2(
-        (width * height).toInt(),
-        1,
-        // width.toInt(),
-        // height.toInt(),
-        noiseType: NoiseType.perlin,
-        frequency: 0.015,
-        octaves: 5,
-        cellularReturnType: CellularReturnType.distance,
-      );
-
-    bloop.configure();
+      ..configure();
 
     return bloop;
   }
@@ -66,12 +67,10 @@ class Bloop {
 
     double vx = noise2D[ix][0].remap(-1, 1, -maxSpeed, maxSpeed);
     double vy = noise2D[iy][0].remap(-1, 1, -maxSpeed, maxSpeed);
-    xOff += 0.1; // * rando.nextDouble();
-    yOff += 0.1; // * rando.nextDouble();
-    if (xOff > width - 1) xOff = 0;
-    if (yOff > height - 1) yOff = 0;
-    // if (xOff > size - 1) xOff = 0;
-    // if (yOff > size - 1) yOff = 0;
+    xOff += noiseIndexSteppingRate; // * rando.nextDouble();
+    yOff += noiseIndexSteppingRate; // * rando.nextDouble();
+    if (xOff > size - 1) xOff = 0;
+    if (yOff > size - 1) yOff = 0;
 
     position.add(vx, vy);
 

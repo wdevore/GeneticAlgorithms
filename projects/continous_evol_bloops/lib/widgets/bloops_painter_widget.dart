@@ -75,7 +75,5 @@ class BloopsPainter extends CustomPainter {
 
     canvas.drawCircle(
         Offset(position.x, position.y), simulation.bloop.r, linePaint);
-    // canvas.drawCircle(const Offset(225, 225), 40, linePaint2);
-    // canvas.drawCircle(const Offset(0, 225), 40, linePaint2);
   }
 }
