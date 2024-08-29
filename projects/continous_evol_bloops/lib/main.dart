@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'simulation/simulation.dart';
 import 'widgets/bloops_painter_widget.dart';
 
 void main() {
-  runApp(const MyApp());
+  final GASimulation gaSimulation = GASimulation();
+
+  runApp(
+    ChangeNotifierProvider.value(
+      value: gaSimulation,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -36,6 +45,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    GASimulation gaSim = context.read<GASimulation>();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -43,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           ElevatedButton(
             onPressed: () {
-              // gaSim.configure();
+              gaSim.configure();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange.shade50,
@@ -60,7 +71,8 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(width: 10),
           ElevatedButton(
             onPressed: () {
-              // gaSim.start();
+              gaSim.start();
+              gaSim.run();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange.shade50,
@@ -77,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(width: 10),
           ElevatedButton(
             onPressed: () {
-              // gaSim.stop();
+              gaSim.stop();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.orange.shade50,

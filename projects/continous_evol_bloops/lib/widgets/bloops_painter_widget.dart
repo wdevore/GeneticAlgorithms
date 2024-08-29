@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../simulation/simulation.dart';
+import '../simulation/vector_2d.dart';
 import 'border_clip_path.dart';
 
 class BloopsPainterWidget extends StatefulWidget {
@@ -27,8 +30,12 @@ class _BloopsPainterWidgetState extends State<BloopsPainterWidget> {
         width: widget.width,
         height: widget.height,
         color: widget.bgColor,
-        child: CustomPaint(
-          painter: BloopsPainter(),
+        child: Consumer<GASimulation>(
+          builder: (BuildContext context, GASimulation value, Widget? child) {
+            return CustomPaint(
+              painter: BloopsPainter(value),
+            );
+          },
         ),
       ),
     );
@@ -36,17 +43,19 @@ class _BloopsPainterWidgetState extends State<BloopsPainterWidget> {
 }
 
 class BloopsPainter extends CustomPainter {
+  final GASimulation simulation;
   final strokeWidth = 1.0;
 
   late Paint linePaint;
   late Paint linePaint2;
 
-  BloopsPainter() {
+  BloopsPainter(this.simulation) {
     linePaint = Paint()
       ..color = const Color.fromARGB(100, 100, 100, 100)
       ..strokeWidth = strokeWidth;
     linePaint2 = Paint()
       ..color = const Color.fromARGB(100, 50, 50, 50)
+      ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
   }
 
@@ -62,8 +71,11 @@ class BloopsPainter extends CustomPainter {
   }
 
   void _draw(Canvas canvas, Size size, double strokeWidth) {
-    canvas.drawCircle(const Offset(200, 200), 20, linePaint);
-    canvas.drawCircle(const Offset(225, 225), 40, linePaint2);
-    canvas.drawCircle(const Offset(0, 225), 40, linePaint2);
+    Vector2D position = simulation.bloop.position;
+
+    canvas.drawCircle(
+        Offset(position.x, position.y), simulation.bloop.r, linePaint);
+    // canvas.drawCircle(const Offset(225, 225), 40, linePaint2);
+    // canvas.drawCircle(const Offset(0, 225), 40, linePaint2);
   }
 }

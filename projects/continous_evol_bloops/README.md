@@ -24,6 +24,9 @@ It doesn't fully implement GAs but uses a continuous approach. It doesn't have a
 
 # Resources
 
+Filip Hracek's video on performance. I marked the time where he talks about frame animation and the correct way to do it.
+- https://youtu.be/pD38Yyz7N2E?list=PLfyzK85uts6rFAGzLA9PyVAJjqbhf_Z6k&t=974
+
 ## The Coding Train
 Videos on Perlin noise:
 - https://www.youtube.com/watch?v=Qf4dIN99e2w&list=PLRqwX-V7Uu6ZV4yEcW3uDwOgGXKUUsPOM&index=3&pp=iAQB
