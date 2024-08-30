@@ -84,11 +84,15 @@ class Bloop {
   void borders() {
     if (position.x < -r * 2) {
       position.x = width + r * 2;
-    } else if (position.y < r * 2) {
-      position.y = height + r * 2;
-    } else if (position.x > width + r * 2) {
+    }
+    if (position.x > width + r * 2) {
       position.x = -r * 2;
-    } else if (position.y > height + r * 2) {
+    }
+
+    if (position.y < -r * 2) {
+      position.y = height + r * 2;
+    }
+    if (position.y > height + r * 2) {
       position.y = -r * 2;
     }
   }
