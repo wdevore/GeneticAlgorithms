@@ -77,7 +77,7 @@ class Bloop {
 
     position.add(vx, vy);
 
-    health -= 0.2;
+    health -= 0.15;
     borders();
   }
 

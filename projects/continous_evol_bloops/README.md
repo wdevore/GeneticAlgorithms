@@ -1,5 +1,7 @@
 # continous_evol_bloops
 
+![Bloop](Bloop-GA.png)
+
 This project is based on *The coding Train":
 - https://editor.p5js.org/natureofcode/sketches/1HDlp_tKF
 - https://www.youtube.com/watch?v=Sx_l2GxBC5w&list=PLRqwX-V7Uu6ZV4yEcW3uDwOgGXKUUsPOM&index=1&t=0s
