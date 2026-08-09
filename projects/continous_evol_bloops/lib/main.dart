@@ -59,12 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               gaSim.spawn();
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange.shade50,
-              foregroundColor: const Color.fromARGB(255, 104, 58, 22),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(Colors.orange.shade50),
+              foregroundColor: WidgetStateProperty.all(
+                  const Color.fromARGB(255, 104, 58, 22)),
+              shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0))),
             ),
             child: const Tooltip(
               message: 'Create a new Bloop at a random location',
@@ -76,12 +76,12 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               gaSim.configure(200, Random());
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange.shade50,
-              foregroundColor: const Color.fromARGB(255, 104, 58, 22),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(Colors.orange.shade50),
+              foregroundColor: WidgetStateProperty.all(
+                  const Color.fromARGB(255, 104, 58, 22)),
+              shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0))),
             ),
             child: const Tooltip(
               message: 'Configure Algorithm for simulation',
@@ -94,12 +94,12 @@ class _MyHomePageState extends State<MyHomePage> {
               gaSim.start();
               gaSim.run();
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange.shade50,
-              foregroundColor: const Color.fromARGB(255, 104, 58, 22),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(Colors.orange.shade50),
+              foregroundColor: WidgetStateProperty.all(
+                  const Color.fromARGB(255, 104, 58, 22)),
+              shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0))),
             ),
             child: const Tooltip(
               message: 'Start Algorithm',
@@ -111,12 +111,12 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () {
               gaSim.stop();
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange.shade50,
-              foregroundColor: const Color.fromARGB(255, 104, 58, 22),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(Colors.orange.shade50),
+              foregroundColor: WidgetStateProperty.all(
+                  const Color.fromARGB(255, 104, 58, 22)),
+              shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0))),
             ),
             child: const Tooltip(
               message: 'Stop Algorithm',

@@ -21,28 +21,24 @@ class Food {
 
   factory Food.create(
       int foodCount, double width, double height, Random rando) {
-    Food food = Food()
+    return Food()
       ..rando = rando
       ..width = width
-      ..height = height;
-
-    food.foodPositions.clear();
-
-    for (var i = 0; i < foodCount; i++) {
-      food.foodPositions.add(
-        food.generatePosition(),
-      );
-    }
-
-    food.foodFillPaint = Paint()
-      ..color = Colors.green.shade200
-      ..strokeWidth = 2;
-    food.foodBorderPaint = Paint()
-      ..color = Colors.green.shade600
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
-    return food;
+      ..height = height
+      ..foodPositions = List.generate(
+        foodCount,
+        (index) => Vector2D(
+          rando.nextDouble() * width,
+          rando.nextDouble() * height,
+        ),
+      )
+      ..foodFillPaint = (Paint()
+        ..color = Colors.green.shade200
+        ..strokeWidth = 2)
+      ..foodBorderPaint = (Paint()
+        ..color = Colors.green.shade600
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2);
   }
 
   Vector2D generatePosition() {
